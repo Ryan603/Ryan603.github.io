@@ -431,10 +431,10 @@
   <div class="add-panel" id="addPanel" style="display:none;">
     <h3>Add a Video</h3>
     <div style="display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap">
-      <button class="filter-btn active" id="typeLocal" onclick="setVideoType('local')">Upload File</button>
-      <button class="filter-btn" id="typeExternal" onclick="setVideoType('external')">External Link (YouTube / Vimeo)</button>
+      <button class="filter-btn" id="typeLocal" onclick="setVideoType('local')">Upload File</button>
+      <button class="filter-btn active" id="typeExternal" onclick="setVideoType('external')">External Link (YouTube / Vimeo)</button>
     </div>
-    <div id="localFields">
+    <div id="localFields" style="display:none">
       <div class="form-row">
         <div class="form-group"><label>Title</label><input id="vTitle" type="text" placeholder="e.g. Brand Story Reel" /></div>
         <div class="form-group"><label>Category</label>
@@ -452,7 +452,7 @@
       <div class="form-group"><label>Upload Video File (MP4, MOV, WebM)</label><input id="vFile" type="file" accept="video/*" /></div>
       <div class="form-group"><label>Thumbnail Image (optional)</label><input id="vThumb" type="file" accept="image/*" /></div>
     </div>
-    <div id="externalFields" style="display:none">
+    <div id="externalFields">
       <div class="form-row">
         <div class="form-group"><label>Title</label><input id="eTitle" type="text" placeholder="e.g. Documentary on Wildlife" /></div>
         <div class="form-group"><label>Category</label>
@@ -552,7 +552,7 @@
     <div class="contact-info">
       <p class="contact-intro">Available for freelance projects, collaborations, and full-time opportunities. Let's create something extraordinary together.</p>
       <div class="contact-links">
-        <a href="/cdn-cgi/l/email-protection#ef96809a9daf8a828e8683c18c8082" class="contact-link"><span class="contact-link-icon">✉️</span> <span class="__cf_email__" data-cfemail="a5dccad0d7e5c0c8c4ccc98bc6cac8">[email&#160;protected]</span></a>
+        <a href="mailto:your@email.com" class="contact-link"><span class="contact-link-icon">✉️</span> your@email.com</a>
         <a href="https://youtube.com/@yourchannel" target="_blank" class="contact-link"><span class="contact-link-icon">▶️</span> YouTube Channel</a>
         <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-link"><span class="contact-link-icon">💼</span> LinkedIn Profile</a>
         <a href="https://instagram.com/yourhandle" target="_blank" class="contact-link"><span class="contact-link-icon">📸</span> Instagram</a>
@@ -578,18 +578,27 @@
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  let videos = JSON.parse(localStorage.getItem('portfolio_videos') || '[]');
-  let videoType = 'local';
+<script>
+  // Safe storage: tries localStorage, falls back to in-memory if blocked
+  function safeLoad() {
+    try { return JSON.parse(localStorage.getItem('portfolio_videos') || '[]'); } catch(e) { return []; }
+  }
+  function safeSave(data) {
+    try { localStorage.setItem('portfolio_videos', JSON.stringify(data)); } catch(e) { /* blocked, keep in memory */ }
+  }
+
+  let videos = safeLoad();
+  let videoType = 'external'; // Default to external since local blobs don't persist
 
   function saveVideos() {
     const meta = videos.map(v => ({
       id: v.id, title: v.title, category: v.category,
       description: v.description, type: v.type,
       url: v.type === 'external' ? v.url : null,
+      embedUrl: v.embedUrl || null,
       thumbUrl: v.thumbUrl || null, date: v.date
     }));
-    localStorage.setItem('portfolio_videos', JSON.stringify(meta));
+    safeSave(meta);
   }
 
   function getYoutubeId(url) {
