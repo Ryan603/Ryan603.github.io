@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Media Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #faf9f7;
+      --surface: #ffffff;
+      --surface2: #f2f0ed;
+      --border: #e8e4df;
+      --accent: #c1714f;
+      --accent-light: #f5e6df;
+      --accent2: #8b5e3c;
+      --text: #1a1714;
+      --muted: #8a8278;
+      --muted2: #c4bdb6;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'Instrument Sans', sans-serif;
+      --nav-h: 68px;
+      --radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(250,249,247,0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.25rem; font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 2px; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.82rem; font-weight: 500;
+      padding: 7px 15px; border-radius: 20px;
+      transition: color .2s, background .2s;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--surface2); }
+    .nav-links a.active { color: var(--accent); background: var(--accent-light); font-weight: 600; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .hamburger span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; display: block; }
+
+    /* SECTIONS */
+    section { min-height: 100vh; padding: calc(var(--nav-h) + 80px) 48px 100px; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent);
+      background: var(--accent-light); padding: 5px 14px; border-radius: 20px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 5.2rem);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -0.03em; margin-bottom: 52px;
+    }
+    .section-title em { color: var(--accent); font-style: normal; }
+    .section-title .light { font-weight: 400; color: var(--muted); }
+
+    /* HOME */
+    #home {
+      display: grid; grid-template-columns: 1.1fr 0.9fr;
+      align-items: center; gap: 80px; position: relative;
+    }
+    #home::before {
+      content: '';
+      position: absolute; top: 5%; right: -5%;
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, rgba(193,113,79,0.07) 0%, transparent 70%);
+      pointer-events: none; border-radius: 50%;
+    }
+    .home-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
+    }
+    .home-eyebrow::before { content: ''; width: 26px; height: 2px; background: var(--accent); border-radius: 2px; }
+    .home-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.4rem, 7vw, 6.2rem);
+      font-weight: 800; line-height: 1.0;
+      letter-spacing: -0.04em; margin-bottom: 28px;
+    }
+    .home-title .pop { color: var(--accent); }
+    .home-title .alt { font-weight: 400; color: var(--muted); font-style: italic; display: block; }
+    .home-desc {
+      font-size: 1.05rem; font-weight: 300; color: var(--muted);
+      max-width: 420px; line-height: 1.85; margin-bottom: 44px; font-style: italic;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px; border-radius: 50px;
+      font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+      text-decoration: none; cursor: pointer; border: none; transition: all .25s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(193,113,79,0.28); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .home-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+    .home-visual { position: relative; }
+    .home-visual-card {
+      aspect-ratio: 4/5; background: var(--surface2);
+      border-radius: 28px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; color: var(--muted2); position: relative;
+    }
+    .home-visual-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, transparent 50%, rgba(193,113,79,0.1));
+    }
+    .home-tag {
+      position: absolute; background: var(--surface); border-radius: 12px;
+      padding: 10px 16px; font-size: 0.78rem; font-weight: 600;
+      color: var(--text); box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      white-space: nowrap;
+    }
+    .home-tag.t1 { top: 20px; right: -24px; }
+    .home-tag.t2 { bottom: 28px; left: -24px; }
+    .home-tag span { color: var(--accent); }
+    .home-stats {
+      display: flex; gap: 40px; margin-top: 52px;
+      padding-top: 44px; border-top: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: var(--font-display); font-size: 2.2rem;
+      font-weight: 800; color: var(--accent); letter-spacing: -0.04em;
+    }
+    .stat-label { font-size: 0.73rem; font-weight: 500; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; }
+
+    /* FILTER + GRID */
+    .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 40px; }
+    .filter-btn {
+      padding: 8px 20px; border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: transparent; color: var(--muted);
+      font-family: var(--font-body); font-size: 0.8rem; font-weight: 500;
+      cursor: pointer; transition: .2s;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+    .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+
+    /* VIDEO CARD */
+    .video-card {
+      background: var(--surface); border-radius: var(--radius);
+      overflow: hidden; cursor: pointer;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .video-card:hover { transform: translateY(-6px); box-shadow: 0 20px 56px rgba(0,0,0,0.1); }
+    .video-thumb { position: relative; aspect-ratio: 16/9; background: var(--surface2); overflow: hidden; }
+    .video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .video-card:hover .video-thumb img { transform: scale(1.04); }
+    .thumb-placeholder { width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.8rem;background:var(--surface2); }
+    .play-btn {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(250,249,247,0.15); opacity: 0; transition: opacity .25s;
+    }
+    .video-card:hover .play-btn { opacity: 1; }
+    .play-btn svg { width: 52px; height: 52px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.15)); }
+    .video-cat {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--accent); color: #fff;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+    }
+    .ext-badge {
+      position: absolute; top: 12px; right: 12px;
+      background: rgba(255,255,255,0.9); color: var(--muted);
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+    }
+    .video-info { padding: 18px 20px 20px; }
+    .video-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 5px; line-height: 1.4; letter-spacing: -0.01em; }
+    .video-meta { font-size: 0.8rem; color: var(--muted); font-style: italic; font-weight: 300; }
+    .video-actions { display: flex; gap: 6px; margin-top: 14px; }
+    .tag {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 4px 10px;
+      border-radius: 20px; background: var(--surface2); color: var(--muted);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(26,23,20,0.65);
+      display: none; align-items: center; justify-content: center;
+      padding: 20px; backdrop-filter: blur(10px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--surface); border-radius: 20px;
+      overflow: hidden; width: 100%; max-width: 880px;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.18);
+      animation: fadeUp .28s ease;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 22px; border-bottom: 1px solid var(--border);
+    }
+    .modal-title { font-size: 0.95rem; font-weight: 600; letter-spacing: -0.01em; }
+    .modal-close {
+      width: 32px; height: 32px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: transparent;
+      color: var(--muted); cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: .2s; font-family: var(--font-body);
+    }
+    .modal-close:hover { background: var(--surface2); color: var(--text); }
+    .modal-video { aspect-ratio: 16/9; background: var(--surface2); }
+    .modal-video video, .modal-video iframe { width: 100%; height: 100%; border: none; display: block; }
+    .modal-footer { padding: 14px 22px; font-size: 0.82rem; color: var(--muted); }
+
+    /* ADD PANEL */
+    .add-panel {
+      background: var(--surface); border-radius: var(--radius);
+      padding: 32px; margin-bottom: 40px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    .add-panel h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 22px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+    .form-group label { font-size: 0.74rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+    .form-group input, .form-group select, .form-group textarea {
+      background: var(--surface2); border: 1.5px solid transparent;
+      border-radius: 10px; padding: 11px 14px; color: var(--text);
+      font-family: var(--font-body); font-size: 0.9rem; outline: none; transition: border-color .2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); background: var(--surface); }
+    .form-group select option { background: var(--surface); }
+    .form-actions { display: flex; gap: 12px; margin-top: 8px; }
+    .toggle-add {
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: 28px;
+      font-size: 0.82rem; font-weight: 600;
+      color: var(--accent); cursor: pointer;
+      background: var(--accent-light); border: none;
+      padding: 10px 22px; border-radius: 50px;
+      font-family: var(--font-body); transition: .2s;
+    }
+    .toggle-add:hover { background: var(--accent); color: #fff; }
+
+    /* ANIMATION */
+    #animation .anim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .anim-card { background: var(--surface); border-radius: var(--radius); overflow: hidden; transition: transform .25s, box-shadow .25s; }
+    .anim-card:hover { transform: translateY(-6px); box-shadow: 0 20px 56px rgba(0,0,0,0.1); }
+    .anim-thumb { aspect-ratio: 4/3; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; overflow: hidden; }
+    .anim-thumb img, .anim-thumb video { width: 100%; height: 100%; object-fit: cover; }
+    .anim-type-badge {
+      position: absolute; bottom: 10px; left: 10px;
+      background: var(--accent); color: #fff;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 20px;
+    }
+    .anim-info { padding: 14px 16px 18px; }
+    .anim-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.01em; }
+    .anim-desc { font-size: 0.78rem; color: var(--muted); font-style: italic; }
+    .coming-soon-banner {
+      grid-column: 1/-1; border: 2px dashed var(--border);
+      border-radius: var(--radius); padding: 72px 30px; text-align: center; background: var(--surface);
+    }
+    .coming-soon-banner .cs-icon { font-size: 3rem; margin-bottom: 18px; }
+    .coming-soon-banner h3 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 10px; }
+    .coming-soon-banner p { color: var(--muted); max-width: 380px; margin: 0 auto 24px; font-style: italic; font-weight: 300; }
+
+    /* ABOUT */
+    #about { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: 80px; align-items: start; }
+    .about-photo {
+      aspect-ratio: 3/4; background: var(--surface2); border-radius: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; color: var(--muted2); position: relative; overflow: hidden;
+    }
+    .about-photo::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 40%; background: linear-gradient(to top, rgba(193,113,79,0.08), transparent); }
+    .skills-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+    .skill-chip { padding: 7px 16px; border-radius: 20px; background: var(--surface2); font-size: 0.78rem; font-weight: 500; color: var(--muted); transition: .2s; }
+    .skill-chip:hover { background: var(--accent-light); color: var(--accent); }
+    .about-bio { font-size: 1rem; font-weight: 300; color: var(--muted); line-height: 1.85; margin-bottom: 20px; font-style: italic; }
+    .about-bio strong { color: var(--text); font-weight: 600; font-style: normal; }
+
+    /* CONTACT */
+    #contact { min-height: auto; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+    .contact-form { background: var(--surface); border-radius: var(--radius); padding: 36px; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+    .contact-intro { font-size: 1.05rem; font-weight: 300; color: var(--muted); line-height: 1.8; margin-bottom: 36px; font-style: italic; }
+    .contact-links { display: flex; flex-direction: column; gap: 10px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 14px;
+      color: var(--text); text-decoration: none;
+      font-size: 0.88rem; font-weight: 500; padding: 14px 18px;
+      background: var(--surface); border-radius: 12px;
+      transition: .2s; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .contact-link:hover { background: var(--accent-light); color: var(--accent); transform: translateX(4px); }
+    .contact-link-icon { font-size: 1.2rem; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.8rem; color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
+
+    /* EMPTY */
+    .empty-state {
+      grid-column: 1/-1; text-align: center;
+      padding: 72px 20px; background: var(--surface); border-radius: var(--radius);
+    }
+    .empty-state .icon { font-size: 2.5rem; margin-bottom: 14px; }
+    .empty-state h4 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .empty-state p { color: var(--muted); font-style: italic; font-weight: 300; }
+
+    /* FADE */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity .55s ease, transform .55s ease; }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      section { padding: calc(var(--nav-h) + 40px) 24px 70px; }
+      nav { padding: 0 24px; }
+      #home { grid-template-columns: 1fr; gap: 48px; }
+      .home-visual { display: none; }
+      #about { grid-template-columns: 1fr; }
+      .about-photo { aspect-ratio: 16/9; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+      .nav-links {
+        display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
+        background: var(--surface); flex-direction: column; padding: 16px;
+        border-bottom: 1px solid var(--border); gap: 4px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      }
+      .nav-links.open { display: flex; }
+      .hamburger { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="nav-logo">frame<span>.</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#videos">Video Work</a></li>
+    <li><a href="#animation">Animation</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HOME -->
+<section id="home">
+  <div>
+    <p class="home-eyebrow">Video Producer · Editor · Animator</p>
+    <h1 class="home-title">
+      Telling<br>
+      <span class="pop">stories</span>
+      <span class="alt">through film.</span>
+    </h1>
+    <p class="home-desc">
+      Crafting compelling visual narratives — from raw footage to polished
+      final cuts that leave a lasting impression on every screen.
+    </p>
+    <div class="home-btns">
+      <a href="#portfolio" class="btn btn-primary">View My Work →</a>
+      <a href="#contact" class="btn btn-ghost">Get In Touch</a>
+    </div>
+    <div class="home-stats">
+      <div><div class="stat-num" id="statVideos">0</div><div class="stat-label">Videos</div></div>
+      <div><div class="stat-num">∞</div><div class="stat-label">Ideas</div></div>
+      <div><div class="stat-num">1</div><div class="stat-label">Vision</div></div>
+    </div>
+  </div>
+  <div class="home-visual fade-in">
+    <div class="home-visual-card">🎬</div>
+    <div class="home-tag t1">🎞️ <span>Video Work</span></div>
+    <div class="home-tag t2">✨ <span>Animation</span> coming soon</div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <p class="section-label">✦ All Work</p>
+  <h2 class="section-title">Portfolio <span class="light">overview</span></h2>
+  <div class="grid fade-in" id="portfolioGrid"></div>
+</section>
+
+<!-- VIDEO WORK -->
+<section id="videos">
+  <p class="section-label">✦ Video Production</p>
+  <h2 class="section-title">Video <em>work</em></h2>
+
+  <button class="toggle-add" id="toggleBtn" onclick="toggleAddPanel()">+ Add New Video</button>
+
+  <div class="add-panel" id="addPanel" style="display:none;">
+    <h3>Add a Video</h3>
+    <div style="display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap">
+      <button class="filter-btn active" id="typeLocal" onclick="setVideoType('local')">Upload File</button>
+      <button class="filter-btn" id="typeExternal" onclick="setVideoType('external')">External Link (YouTube / Vimeo)</button>
+    </div>
+    <div id="localFields">
+      <div class="form-row">
+        <div class="form-group"><label>Title</label><input id="vTitle" type="text" placeholder="e.g. Brand Story Reel" /></div>
+        <div class="form-group"><label>Category</label>
+          <select id="vCat">
+            <option value="Documentary">Documentary</option>
+            <option value="Podcast">Podcast</option>
+            <option value="Short Film">Short Film</option>
+            <option value="Social Media">Social Media Edit</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Description</label><input id="vDesc" type="text" placeholder="A short description of this piece" /></div>
+      <div class="form-group"><label>Upload Video File (MP4, MOV, WebM)</label><input id="vFile" type="file" accept="video/*" /></div>
+      <div class="form-group"><label>Thumbnail Image (optional)</label><input id="vThumb" type="file" accept="image/*" /></div>
+    </div>
+    <div id="externalFields" style="display:none">
+      <div class="form-row">
+        <div class="form-group"><label>Title</label><input id="eTitle" type="text" placeholder="e.g. Documentary on Wildlife" /></div>
+        <div class="form-group"><label>Category</label>
+          <select id="eCat">
+            <option value="Documentary">Documentary</option>
+            <option value="Podcast">Podcast</option>
+            <option value="Short Film">Short Film</option>
+            <option value="Social Media">Social Media Edit</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Description</label><input id="eDesc" type="text" placeholder="A short description" /></div>
+      <div class="form-group"><label>Video URL (YouTube, Vimeo, etc.)</label><input id="eUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." /></div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="addVideo()">Add to Portfolio</button>
+      <button class="btn btn-ghost" onclick="toggleAddPanel()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="filter-bar" id="videoFilter">
+    <button class="filter-btn active" onclick="filterVideos('All',this)">All</button>
+    <button class="filter-btn" onclick="filterVideos('Documentary',this)">Documentary</button>
+    <button class="filter-btn" onclick="filterVideos('Podcast',this)">Podcast</button>
+    <button class="filter-btn" onclick="filterVideos('Short Film',this)">Short Film</button>
+    <button class="filter-btn" onclick="filterVideos('Social Media',this)">Social Media</button>
+    <button class="filter-btn" onclick="filterVideos('Commercial',this)">Commercial</button>
+  </div>
+
+  <div class="grid fade-in" id="videoGrid"></div>
+</section>
+
+<!-- ANIMATION -->
+<section id="animation">
+  <p class="section-label">✦ Motion & Animation</p>
+  <h2 class="section-title">Animation <span class="light">work</span></h2>
+  <div class="filter-bar">
+    <button class="filter-btn active">All</button>
+    <button class="filter-btn">Animated Video</button>
+    <button class="filter-btn">Storyboard</button>
+    <button class="filter-btn">Motion Graphic</button>
+    <button class="filter-btn">GIF</button>
+  </div>
+  <div class="anim-grid fade-in" id="animGrid">
+    <div class="coming-soon-banner">
+      <div class="cs-icon">🎨</div>
+      <h3>Animation coming soon</h3>
+      <p>This section is all set for your reels, storyboards, GIFs, and motion graphics whenever you're ready.</p>
+      <button class="btn btn-ghost" onclick="document.getElementById('animUploadBtn').click()">+ Add Animation Project</button>
+      <input type="file" id="animUploadBtn" style="display:none" accept="video/*,image/*,.gif" onchange="addAnimProject(this)" />
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div>
+    <div class="about-photo fade-in">📽️</div>
+  </div>
+  <div class="fade-in">
+    <p class="section-label">✦ About Me</p>
+    <h2 class="section-title" style="font-size:clamp(2.2rem,4.5vw,3.8rem)">The person <em>behind</em> the lens</h2>
+    <p class="about-bio"><strong>I'm a video producer, editor, and emerging animator</strong> passionate about bringing stories to life through the lens and on the timeline. From concept to final cut, I handle every stage of the production process.</p>
+    <p class="about-bio">My work spans <strong>documentaries, branded content, podcasts, and social media</strong> — each piece crafted with intentionality, rhythm, and a deep respect for the story being told.</p>
+    <p class="about-bio" style="color:var(--accent);font-size:0.85rem">✏️ Open the file in a text editor to update this bio with your own words.</p>
+    <div class="skills-list">
+      <span class="skill-chip">Video Production</span>
+      <span class="skill-chip">Post-Production</span>
+      <span class="skill-chip">Color Grading</span>
+      <span class="skill-chip">Motion Graphics</span>
+      <span class="skill-chip">Sound Design</span>
+      <span class="skill-chip">Storytelling</span>
+      <span class="skill-chip">Adobe Premiere</span>
+      <span class="skill-chip">After Effects</span>
+      <span class="skill-chip">DaVinci Resolve</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label">✦ Get In Touch</p>
+  <h2 class="section-title">Let's <em>connect</em></h2>
+  <div class="contact-grid fade-in">
+    <div class="contact-form">
+      <h3 style="font-family:var(--font-display);font-size:1.3rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:22px">Send a message</h3>
+      <div class="form-row">
+        <div class="form-group"><label>Your Name</label><input type="text" placeholder="Jane Doe" /></div>
+        <div class="form-group"><label>Email</label><input type="email" placeholder="jane@example.com" /></div>
+      </div>
+      <div class="form-group"><label>Subject</label><input type="text" placeholder="Project enquiry..." /></div>
+      <div class="form-group"><label>Message</label><textarea rows="5" placeholder="Tell me about your project..."></textarea></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="alert('Connect a form service like Formspree to activate sending!')">Send Message →</button>
+    </div>
+    <div class="contact-info">
+      <p class="contact-intro">Available for freelance projects, collaborations, and full-time opportunities. Let's create something extraordinary together.</p>
+      <div class="contact-links">
+        <a href="/cdn-cgi/l/email-protection#ef96809a9daf8a828e8683c18c8082" class="contact-link"><span class="contact-link-icon">✉️</span> <span class="__cf_email__" data-cfemail="a5dccad0d7e5c0c8c4ccc98bc6cac8">[email&#160;protected]</span></a>
+        <a href="https://youtube.com/@yourchannel" target="_blank" class="contact-link"><span class="contact-link-icon">▶️</span> YouTube Channel</a>
+        <a href="https://linkedin.com/in/yourprofile" target="_blank" class="contact-link"><span class="contact-link-icon">💼</span> LinkedIn Profile</a>
+        <a href="https://instagram.com/yourhandle" target="_blank" class="contact-link"><span class="contact-link-icon">📸</span> Instagram</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 frame. All rights reserved.</span>
+  <span>Made with ☕ for storytellers</span>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Video Title</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-video" id="modalVideo"></div>
+    <div class="modal-footer" id="modalFooter"></div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  let videos = JSON.parse(localStorage.getItem('portfolio_videos') || '[]');
+  let videoType = 'local';
+
+  function saveVideos() {
+    const meta = videos.map(v => ({
+      id: v.id, title: v.title, category: v.category,
+      description: v.description, type: v.type,
+      url: v.type === 'external' ? v.url : null,
+      thumbUrl: v.thumbUrl || null, date: v.date
+    }));
+    localStorage.setItem('portfolio_videos', JSON.stringify(meta));
+  }
+
+  function getYoutubeId(url) {
+    const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : null;
+  }
+  function getVimeoId(url) {
+    const m = url.match(/vimeo\.com\/(\d+)/);
+    return m ? m[1] : null;
+  }
+  function getThumbnailFromUrl(url) {
+    const ytId = getYoutubeId(url);
+    if (ytId) return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
+    return null;
+  }
+  function getEmbedFromUrl(url) {
+    const ytId = getYoutubeId(url);
+    if (ytId) return `https://www.youtube.com/embed/${ytId}?autoplay=1`;
+    const vmId = getVimeoId(url);
+    if (vmId) return `https://player.vimeo.com/video/${vmId}?autoplay=1`;
+    return null;
+  }
+
+  function toggleAddPanel() {
+    const p = document.getElementById('addPanel');
+    const isHidden = p.style.display === 'none' || p.style.display === '';
+    p.style.display = isHidden ? 'block' : 'none';
+    if (isHidden) p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  function setVideoType(t) {
+    videoType = t;
+    document.getElementById('localFields').style.display = t === 'local' ? 'block' : 'none';
+    document.getElementById('externalFields').style.display = t === 'external' ? 'block' : 'none';
+    document.getElementById('typeLocal').classList.toggle('active', t === 'local');
+    document.getElementById('typeExternal').classList.toggle('active', t === 'external');
+  }
+
+  function addVideo() {
+    if (videoType === 'external') {
+      const url = document.getElementById('eUrl').value.trim();
+      const title = document.getElementById('eTitle').value.trim() || 'Untitled';
+      const cat = document.getElementById('eCat').value;
+      const desc = document.getElementById('eDesc').value.trim();
+      if (!url) { alert('Please paste a video URL.'); return; }
+      const embed = getEmbedFromUrl(url);
+      const thumbUrl = getThumbnailFromUrl(url);
+      videos.unshift({ id: Date.now(), title, category: cat, description: desc,
+        type: 'external', url, embedUrl: embed, thumbUrl, date: new Date().toLocaleDateString() });
+    } else {
+      const fileInput = document.getElementById('vFile');
+      const thumbInput = document.getElementById('vThumb');
+      const title = document.getElementById('vTitle').value.trim() || 'Untitled';
+      const cat = document.getElementById('vCat').value;
+      const desc = document.getElementById('vDesc').value.trim();
+      if (!fileInput.files[0]) { alert('Please select a video file.'); return; }
+      const videoBlob = URL.createObjectURL(fileInput.files[0]);
+      const thumbUrl = thumbInput.files[0] ? URL.createObjectURL(thumbInput.files[0]) : null;
+      videos.unshift({ id: Date.now(), title, category: cat, description: desc,
+        type: 'local', blobUrl: videoBlob, thumbUrl, date: new Date().toLocaleDateString() });
+    }
+    saveVideos(); renderVideos(); renderPortfolio(); toggleAddPanel(); updateStats();
+  }
+
+  function makeCard(v) {
+    const thumb = v.thumbUrl
+      ? `<img src="${v.thumbUrl}" alt="${v.title}" loading="lazy" />`
+      : `<div class="thumb-placeholder">🎬</div>`;
+    const extBadge = v.type === 'external' ? `<span class="ext-badge">External</span>` : '';
+    return `
+      <div class="video-card" onclick="openVideo(${v.id})">
+        <div class="video-thumb">
+          ${thumb}
+          <span class="video-cat">${v.category}</span>
+          ${extBadge}
+          <div class="play-btn">
+            <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="30" cy="30" r="30" fill="rgba(193,113,79,0.92)"/>
+              <polygon points="24,18 44,30 24,42" fill="#fff"/>
+            </svg>
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="video-title">${v.title}</div>
+          <div class="video-meta">${v.description || ''}</div>
+          <div class="video-actions">
+            <span class="tag">${v.date || ''}</span>
+            <span class="tag">${v.type === 'external' ? 'External' : 'Uploaded'}</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  let currentFilter = 'All';
+  function renderVideos(filter) {
+    if (filter) currentFilter = filter;
+    const grid = document.getElementById('videoGrid');
+    const list = currentFilter === 'All' ? videos : videos.filter(v => v.category === currentFilter);
+    grid.innerHTML = list.length === 0
+      ? `<div class="empty-state"><div class="icon">🎞️</div><h4>No Videos Yet</h4><p>Click "Add New Video" above to get started.</p></div>`
+      : list.map(makeCard).join('');
+  }
+  function renderPortfolio() {
+    const grid = document.getElementById('portfolioGrid');
+    const recent = videos.slice(0, 6);
+    grid.innerHTML = recent.length === 0
+      ? `<div class="empty-state"><div class="icon">🎬</div><h4>Portfolio Empty</h4><p>Head to Video Work to add your first project.</p></div>`
+      : recent.map(makeCard).join('');
+  }
+  function filterVideos(cat, btn) {
+    document.querySelectorAll('#videoFilter .filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderVideos(cat);
+  }
+
+  function openVideo(id) {
+    const v = videos.find(x => x.id === id);
+    if (!v) return;
+    if (v.type === 'external' && v.url) {
+      if (v.embedUrl) {
+        document.getElementById('modalTitle').textContent = v.title;
+        document.getElementById('modalVideo').innerHTML = `<iframe src="${v.embedUrl}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+        document.getElementById('modalFooter').innerHTML = `<a href="${v.url}" target="_blank" style="color:var(--accent);text-decoration:none;font-weight:600">↗ View on original platform</a>`;
+        document.getElementById('modal').classList.add('open');
+      } else { window.open(v.url, '_blank'); }
+      return;
+    }
+    document.getElementById('modalTitle').textContent = v.title;
+    document.getElementById('modalVideo').innerHTML = `<video controls autoplay src="${v.blobUrl}"></video>`;
+    document.getElementById('modalFooter').innerHTML = `<span style="color:var(--muted);font-style:italic">${v.category} · ${v.date}</span>`;
+    document.getElementById('modal').classList.add('open');
+  }
+  function closeModal(e) {
+    if (!e || e.target.classList.contains('modal-overlay') || e.target.classList.contains('modal-close')) {
+      document.getElementById('modal').classList.remove('open');
+      document.getElementById('modalVideo').innerHTML = '';
+    }
+  }
+
+  function addAnimProject(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const isGif = file.type === 'image/gif';
+    const isVideo = file.type.startsWith('video/');
+    const blobUrl = URL.createObjectURL(file);
+    const name = file.name.replace(/\.[^.]+$/, '');
+    const banner = document.querySelector('.coming-soon-banner');
+    if (banner) banner.remove();
+    const grid = document.getElementById('animGrid');
+    const card = document.createElement('div');
+    card.className = 'anim-card';
+    card.innerHTML = `
+      <div class="anim-thumb">
+        ${isGif ? `<img src="${blobUrl}" alt="${name}" />`
+          : isVideo ? `<video src="${blobUrl}" autoplay loop muted style="width:100%;height:100%;object-fit:cover"></video>`
+          : `<img src="${blobUrl}" alt="${name}" />`}
+        <span class="anim-type-badge">${isGif ? 'GIF' : isVideo ? 'Animation' : 'Storyboard'}</span>
+      </div>
+      <div class="anim-info">
+        <div class="anim-title">${name}</div>
+        <div class="anim-desc">Added ${new Date().toLocaleDateString()}</div>
+      </div>`;
+    grid.appendChild(card);
+  }
+
+  function updateStats() {
+    document.getElementById('statVideos').textContent = videos.length;
+  }
+
+  function updateNav() {
+    const sections = ['home','portfolio','videos','animation','about','contact'];
+    let active = 'home';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY >= el.offsetTop - 100) active = id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+    });
+  }
+  window.addEventListener('scroll', updateNav, { passive: true });
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySele
