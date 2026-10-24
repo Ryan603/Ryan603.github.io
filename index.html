@@ -143,7 +143,7 @@ footer{border-top:1px solid var(--border);padding:26px 40px;display:flex;justify
 <section class="contact frame" id="contact"><div class="wrap cgrid"><div class="rv"><span class="lab">Contact</span><h2 class="big" style="font-size:clamp(2.4rem,5vw,4.4rem)">Let's make something.</h2><br>
 <p style="color:var(--text2);max-width:420px;margin-bottom:30px">Open to documentary collaborations, production roles, journalism assignments and long-term creative partnerships across East Africa and beyond.</p>
 <a class="l ul" href="tel:+254745345010"><small>Phone</small>+254 745 345 010</a><a class="l ul" href="mailto:Ryanwangarike@gmail.com"><small>Email</small>Ryanwangarike@gmail.com</a></div>
-<div class="rv"><input id="cf-name" placeholder="Your name"><input id="cf-email" type="email" placeholder="Email address"><textarea id="cf-msg" rows="5" placeholder="Tell me about your project…"></textarea>
+<div class="rv"><input id="cf-gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0"><input id="cf-name" placeholder="Your name"><input id="cf-email" type="email" placeholder="Email address"><textarea id="cf-msg" rows="5" placeholder="Tell me about your project…"></textarea>
 <button class="btn" style="cursor:pointer;margin-top:14px" onclick="handleFormSubmit(this)">Send message <i>→</i></button><div id="formStatus" style="margin-top:14px;font-size:.8rem;display:none"></div></div></div></section>
 <footer><span>[C] Ryan Wangari 2026</span><span>Nairobi, Kenya</span></footer>
 
@@ -160,8 +160,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 async function handleFormSubmit(btn){const name=$('#cf-name').value.trim(),email=$('#cf-email').value.trim(),message=$('#cf-msg').value.trim(),st=$('#formStatus');st.style.display='block';
 if(!name||!email||!message){st.style.color='#e84040';st.textContent='Please fill in all fields before sending.';return}
 btn.disabled=true;st.style.color='var(--text2)';st.textContent='Sending…';
-try{const r=await fetch('https://formspree.io/f/meenygwb',{method:'POST',headers:{Accept:'application/json','Content-Type':'application/json'},body:JSON.stringify({name,email,message})});if(!r.ok)throw 0;st.textContent='Thanks '+name+'! I’ll be in touch soon.';['#cf-name','#cf-email','#cf-msg'].forEach(s=>$(s).value='')}
-catch(x){btn.disabled=false;st.style.color='#e84040';st.textContent='Something went wrong. Please email me at Ryanwangarike@gmail.com'}}
+try{const r=await fetch('https://formspree.io/f/meenygwb',{method:'POST',headers:{Accept:'application/json','Content-Type':'application/json'},body:JSON.stringify({name,email,message,_replyto:email,_subject:'New portfolio enquiry from '+name,_gotcha:$('#cf-gotcha').value})});if(!r.ok){const d=await r.json().catch(()=>({}));throw new Error((d.errors&&d.errors.map(e=>e.message).join(', '))||'')}st.textContent='Thanks '+name+'! I’ll be in touch soon.';['#cf-name','#cf-email','#cf-msg'].forEach(s=>$(s).value='')}
+catch(x){btn.disabled=false;st.style.color='#e5673f';console.error('Form error:',x);st.textContent='Message could not be sent'+(x.message?' ('+x.message+')':'')+'. Please email me at Ryanwangarike@gmail.com'}}
 /* ticker */
 const words=['Documentary Filmmaking','Audio Journalism','Podcast Production','Sound Design','Video Editing','Multimedia Storytelling','Field Journalism'],seps=['→','★','×'];
 let t='';for(let k=0;k<2;k++)words.forEach((w,i)=>t+=`<span>${w}</span><span class="s">${seps[i%3]}</span>`);$('#tk').innerHTML=t+t;
